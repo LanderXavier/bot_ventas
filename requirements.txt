@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+psycopg[binary,pool]
+pydantic
+google-genai
+httpx

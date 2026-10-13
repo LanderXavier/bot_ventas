@@ -1,0 +1,37 @@
+erDiagram
+    negocios {
+        uuid id PK
+        text nombre
+        text zona_horaria
+        text waba_id
+        text phone_number_id UK
+        text access_token
+        bool notificaciones_activas
+    }
+    usuarios {
+        uuid id PK
+        uuid negocio_id FK
+        text telefono UK
+        text nombre
+        text rol
+    }
+    ventas {
+        uuid id PK
+        uuid negocio_id FK
+        uuid vendedor_id FK
+        timestamptz fecha_venta
+        numeric monto
+        varchar moneda
+        varchar cliente_nombre
+        varchar pagador_nombre
+        text productos_descripcion
+        varchar metodo_pago
+        varchar referencia_pago
+        varchar estado
+        varchar source_message_id UK
+        timestamptz created_at
+        timestamptz updated_at
+    }
+    negocios ||--o{ usuarios : "tiene"
+    negocios ||--o{ ventas : "registra"
+    usuarios ||--o{ ventas : "vende"

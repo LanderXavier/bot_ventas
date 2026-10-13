@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ventas
+      POSTGRES_PASSWORD: ventas
+      POSTGRES_DB: ventas
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./app/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ventas"]
+      interval: 5s
+      retries: 10
+
+  app:
+    build: .
+    ports: ["8000:8000"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://ventas:ventas@db:5432/ventas
+    depends_on:
+      db: {condition: service_healthy}
+
+volumes: {pgdata: {}}
